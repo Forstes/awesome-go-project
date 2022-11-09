@@ -1,0 +1,70 @@
+{{define "title"}} Home {{end}}
+
+{{define "regPage"}}
+  <body class="text-center">
+    <div class="form-signin bg-light">
+      <form>
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Login"
+            required
+            minlength="4"
+            maxlength="22"
+          />
+          <label for="floatingInput">Login </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="email"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Login"
+            required
+            minlength="4"
+            maxlength="55"
+          />
+          <label for="floatingInput">Email </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Login"
+            required
+            minlength="4"
+            maxlength="32"
+          />
+          <label for="floatingInput">Password </label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="floatingPassword"
+            placeholder="Password"
+            required
+            minlength="4"
+            maxlength="32"
+          />
+          <label for="floatingPassword">Confirm password</label>
+        </div>
+
+        <div class="checkbox mt-2">
+          <label>
+            <input type="checkbox" value="remember-me" /> Remember me
+          </label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-dark" type="submit">Sign Up</button>
+      </form>
+    </div>
+
+
+  </body>
+    {{end}}
