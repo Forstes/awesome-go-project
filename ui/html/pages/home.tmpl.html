@@ -1,0 +1,22 @@
+{{define "title"}}Home{{end}} 
+
+{{define "main"}}
+<h2>Latest Pictures</h2>
+{{if .Pictures}}
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Created</th>
+  </tr>
+  {{range .Pictures}}
+  <tr>
+    <td><a href='/snippet/view/{{.Title}}'>{{.Title}}</a></td>
+    <td>{{humanDate .Created}}</td>
+    <img src='/pictures{{.Path}}'>
+  </tr>
+  {{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}} 
+{{end}}
