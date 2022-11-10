@@ -2,7 +2,6 @@ package storage
 
 import (
 	"io"
-	"io/ioutil"
 	"net/url"
 	"time"
 
@@ -36,20 +35,10 @@ func (m *MinioStore) GetObject(bucket string, path string) ([]byte, error) {
 	}
 	defer reader.Close()
 
-	b, err := ioutil.ReadAll(reader)
+	b, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
-	/*
-		b := make([]byte, 4)
-		for {
-			_, err := reader.Read(b)
-			if err == io.EOF {
-				break
-			}
-		}*/
-
-	println(b)
 	return b, nil
 }
 

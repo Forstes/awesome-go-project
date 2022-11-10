@@ -7,11 +7,11 @@ import (
 	"strconv"
 
 	"awesome.forstes.go/internal/models"
+	"awesome.forstes.go/internal/validator"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/julienschmidt/httprouter"
 )
 
-// BAD
 func (app *application) pictureStorage(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
 	path := params.ByName("path")
@@ -24,20 +24,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	/*
-		// TODO someone clean this code by moving to helpers, please
-		var pics []*dto.PictureResponse
-		for _, p := range pictures {
-			pics = append(pics, &dto.PictureResponse{PostedBy: p.Owner, Title: p.Title, Created: p.Created, Expires: p.Expires})
-			app.infoLog.Println(p.Path)
-			url, err := app.objStorage.GetObjectPresigned("pictures", "ranalda.png")
-			if err != nil {
-				app.serverError(w, err)
-				return
-			}
-			pics[len(pics)-1].Url = url
-		}
-	*/
+
 	data := app.newTemplateData(r)
 	data.Pictures = pictures
 
@@ -62,21 +49,14 @@ func (app *application) pictureView(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	/*
-		bytes, err := app.objStorage.GetObject("pictures", picture.Path)
-		if err != nil {
-			app.serverError(w, err)
-			return
-		}
-	*/
+
 	data := app.newTemplateData(r)
 	data.Picture = picture
-	//&dto.PictureResponse{PostedBy: picture.Owner, Title: picture.Title, Created: picture.Created, Expires: picture.Expires}
 
 	app.render(w, http.StatusOK, "view.tmpl.html", data)
 }
 
-func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) pictureUploadForm(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 	data.Form = snippetCreateForm{
 		Expires: 365,
@@ -88,11 +68,12 @@ type snippetCreateForm struct {
 	Title   string
 	Content string
 	Expires int
-	//validator.Validator
+	validator.Validator
 }
 
-func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseMultipartForm(1024 * 1024 * 16) // max 16 MB
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
@@ -104,15 +85,14 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	// TODO clarify fields
 	form := snippetCreateForm{
 		Title:   r.PostForm.Get("title"),
 		Content: r.PostForm.Get("content"),
 		Expires: expires,
 	}
 
-	// 16 mb
-	r.ParseMultipartForm(5 << 20)
-	file, handler, err := r.FormFile("uploadfile")
+	file, handler, err := r.FormFile("file")
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
@@ -125,18 +105,18 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// TODO Do some validation shit
-	/* 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
-	   	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
-	   	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
-	   	form.CheckField(validator.PermittedInt(form.Expires, 1, 7, 365), "expires", "This field must equal 1, 7 or 365")
+	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
+	form.CheckField(validator.PermittedInt(form.Expires, 1, 7, 365), "expires", "This field must equal 1, 7 or 365")
+	form.CheckField(validator.PermittedFileFormat(mtype.String(), "image/png", "image/jpeg"), "file", "File must be a png/jpeg image")
+	form.CheckField(validator.MaxMb(handler.Size, 10), "file", "File size should not exceed 10 mb")
 
-	   	if !form.Valid() {
-	   		data := app.newTemplateData(r)
-	   		data.Form = form
-	   		app.render(w, http.StatusUnprocessableEntity, "create.tmpl.html", data)
-	   		return
-	   	}*/
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "create.tmpl.html", data)
+		return
+	}
 
 	id, err := app.pictures.Insert(form.Title, form.Content, form.Expires)
 	app.objStorage.UploadObject("pictures", handler.Filename, file, handler.Size, mtype.String())
@@ -146,5 +126,5 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/picture/view/%d", id), http.StatusSeeOther)
 }
