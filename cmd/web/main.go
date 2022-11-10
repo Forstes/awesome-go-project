@@ -12,6 +12,7 @@ import (
 	"awesome.forstes.go/internal/models"
 	"awesome.forstes.go/internal/storage"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/joho/godotenv"
 	"github.com/minio/minio-go"
 )
 
@@ -24,16 +25,21 @@ type application struct {
 }
 
 func main() {
-	addr := flag.String("addr", ":4000", "HTTP network address")
-	connStr := flag.String("connStr", "postgres://postgres:12345@localhost:5432/go-awesome", "Postgres DB connection")
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	objStorage := flag.String("objStorageConnStr", "localhost:9000/admin123/admin123", "Object storage address and credentials")
+	err := godotenv.Load(".env.local")
+	if err != nil {
+		errorLog.Fatal("Error loading .env file")
+	}
+
+	addr := flag.String("addr", ":4000", "HTTP network address")
+	connStr := flag.String("connStr", os.Getenv("DB_CONN"), "DB connection string")
+
+	objStorage := flag.String("objStorageConnStr", os.Getenv("OBJ_STORE_CONN"), "Object storage address and credentials")
 	objStorageArgs := strings.Split(*objStorage, "/")
 
 	flag.Parse()
-
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	pool, err := pgxpool.Connect(context.Background(), *connStr)
 	if err != nil {

@@ -2,12 +2,14 @@ module awesome.forstes.go
 
 go 1.19
 
-require github.com/jackc/pgx/v4 v4.17.2
+require (
+	github.com/gabriel-vasile/mimetype v1.4.1
+	github.com/jackc/pgx/v4 v4.17.2
+	github.com/joho/godotenv v1.4.0
+)
 
 require (
-	github.com/gabriel-vasile/mimetype v1.4.1 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
-	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
