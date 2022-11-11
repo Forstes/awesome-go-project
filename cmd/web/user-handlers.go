@@ -10,27 +10,21 @@ import (
 	"awesome.forstes.go/internal/validator"
 )
 
-type loginForm struct {
-	Name                string
-	Password            string
-	validator.Validator `form:"-"`
-}
-
-type signupForm struct {
-	Name                string `form:"name"`
-	Password            string `form:"password"`
-	validator.Validator `form:"-"`
+type authForm struct {
+	Name     string
+	Password string
+	validator.Validator
 }
 
 func (app *application) loginForm(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
-	data.Form = loginForm{}
+	data.Form = authForm{}
 	app.render(w, http.StatusOK, "login.tmpl.html", data)
 }
 
 func (app *application) loginPost(w http.ResponseWriter, r *http.Request) {
 	// TODO Pass and login check here
-	form := loginForm{
+	form := authForm{
 		Name:     r.PostForm.Get("name"),
 		Password: r.PostForm.Get("password"),
 	}
@@ -75,12 +69,12 @@ func (app *application) loginPost(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) signupForm(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
-	data.Form = signupForm{}
+	data.Form = authForm{}
 	app.render(w, http.StatusOK, "signup.tmpl.html", data)
 }
 
 func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
-	form := signupForm{
+	form := authForm{
 		Name:     r.PostForm.Get("name"),
 		Password: r.PostForm.Get("password"),
 	}
@@ -119,20 +113,24 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Create a new user with ID: %v", id)
-
+	token, err := app.generateJWT(fmt.Sprint(id))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	cookie := &http.Cookie{Name: "auth_token", Value: token, Expires: time.Now().Add(8 * time.Hour), HttpOnly: true}
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) logoutPost(w http.ResponseWriter, r *http.Request) {
 
 	cookie := &http.Cookie{
-		Name:     "auth_token",
-		Value:    "",
-		MaxAge:   0,
-		HttpOnly: true,
+		Name:   "auth_token",
+		Value:  "",
+		MaxAge: 0,
 	}
 
 	http.SetCookie(w, cookie)
-
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
