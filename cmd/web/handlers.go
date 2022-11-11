@@ -9,6 +9,7 @@ import (
 	"awesome.forstes.go/internal/models"
 	"awesome.forstes.go/internal/validator"
 	"github.com/gabriel-vasile/mimetype"
+	"github.com/golang-jwt/jwt"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -57,6 +58,20 @@ func (app *application) pictureView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) pictureUploadForm(w http.ResponseWriter, r *http.Request) {
+
+	cookie, _ := r.Cookie("auth_token")
+
+	token, err := app.extractToken(cookie)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		userId := claims["user"].(string)
+		println(userId)
+	}
+
 	data := app.newTemplateData(r)
 	data.Form = snippetCreateForm{
 		Expires: 365,
