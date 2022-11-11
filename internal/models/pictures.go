@@ -58,8 +58,8 @@ func (m *PictureModel) Get(id int) (*Picture, error) {
 
 func (m *PictureModel) Latest() ([]*Picture, error) {
 
-	stmt := `SELECT u.name, title, path, created, expires FROM pictures
-	JOIN users u ON pictures.owner_id = u.id
+	stmt := `SELECT p.id, u.name, title, path, created, expires FROM pictures p
+	JOIN users u ON p.owner_id = u.id
 	WHERE expires > NOW()
 	ORDER BY created DESC LIMIT 10`
 
@@ -73,7 +73,7 @@ func (m *PictureModel) Latest() ([]*Picture, error) {
 
 	for rows.Next() {
 		s := &Picture{}
-		err = rows.Scan(&s.Owner, &s.Title, &s.Path, &s.Created, &s.Expires)
+		err = rows.Scan(&s.ID, &s.Owner, &s.Title, &s.Path, &s.Created, &s.Expires)
 		if err != nil {
 			return nil, err
 		}

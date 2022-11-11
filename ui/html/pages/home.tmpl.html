@@ -1,20 +1,20 @@
 {{define "title"}}Home{{end}}
 {{define "main"}}
-{{if .Images}}
-<main class="my-5 ">
+{{if .Pictures}}
+<main class="my-5">
   <div class="container">
     <section>
       <div class="row gx-5 col-md-3 ">
-        {{range .Images}}
+        {{range .Pictures}}
         <!-- 1 block -->
         <div>
           <div class="bg-image hover-overlay shadow-1-strong ripple mb-4" data-mdb-ripple-color="light">
-            <img src="{{.Path}}" class="img-fluid"/>
+            <img src="/pictures{{.Path}}" class="img-fluid"/>
             <a href="#!">
               <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
             </a>
           </div>
-          <a href='/pictures/{{.Path}}' class="text-dark">
+          <a href='/picture/view/{{.ID}}' class="text-dark">
             <h5>Owner: {{ .Owner}}</h5>
             <p> {{.Created}} </p>
           </a>
