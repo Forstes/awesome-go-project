@@ -15973,13 +15973,18 @@ fieldset:disabled .btn-group-vertical {
   }
 }
 
+.loginSignin{
+  width: 50% !important;
+  margin: 10% auto !important;
+}
+
 footer {
   padding: 2px calc((100% - 800px) / 2) 0;
 }
 footer {
-  margin-top: 24em;
+  margin-top: 22em;
   border-top: 1px solid #E4E5E7;
-  padding-top: 17px;
+  /* padding-top: 17px; */
   padding-bottom: 15px;
   background: #FFFFFF;
   height: 60px;
