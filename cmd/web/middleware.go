@@ -33,23 +33,26 @@ func (app *application) verifyJWT(next http.Handler) http.HandlerFunc {
 
 		cookie, err := r.Cookie("auth_token")
 		if err != nil {
-			app.clientError(w, http.StatusUnauthorized)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 
 		token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodECDSA)
 			if !ok {
-				app.clientError(w, http.StatusUnauthorized)
+				return nil, errors.New("parse error")
 			}
 			return "", nil
 		})
 		if err != nil {
 			err := errors.New("couldn't parse your token")
 			app.serverError(w, err)
+			return
 		}
 
 		if !token.Valid {
-			app.clientError(w, http.StatusUnauthorized)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
 		}
 		next.ServeHTTP(w, r)
 	})
