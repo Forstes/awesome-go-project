@@ -22,13 +22,13 @@ type PictureModel struct {
 	DB *pgxpool.Pool
 }
 
-func (m *PictureModel) Insert(title string, content string, expires int) (int, error) {
+func (m *PictureModel) Insert(userId int, title string, path string, expires int) (int, error) {
 
-	stmt := `INSERT INTO pictures (title, path, created, expires)
-	VALUES($1, $2, NOW(), NOW() + INTERVAL '1 DAY' * $3) RETURNING ID`
+	stmt := `INSERT INTO pictures (owner_id, title, path, created, expires)
+	VALUES($1, $2, $3, NOW(), NOW() + INTERVAL '1 DAY' * $4) RETURNING ID`
 
 	var id int
-	err := m.DB.QueryRow(context.Background(), stmt, title, content, expires).Scan(&id)
+	err := m.DB.QueryRow(context.Background(), stmt, title, path, expires).Scan(&id)
 
 	if err != nil {
 		return 0, err

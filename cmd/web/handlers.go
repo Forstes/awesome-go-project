@@ -9,7 +9,6 @@ import (
 	"awesome.forstes.go/internal/models"
 	"awesome.forstes.go/internal/validator"
 	"github.com/gabriel-vasile/mimetype"
-	"github.com/golang-jwt/jwt"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -58,20 +57,6 @@ func (app *application) pictureView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) pictureUploadForm(w http.ResponseWriter, r *http.Request) {
-
-	cookie, _ := r.Cookie("auth_token")
-
-	token, err := app.extractToken(cookie)
-	if err != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		userId := claims["user"].(string)
-		println(userId)
-	}
-
 	data := app.newTemplateData(r)
 	data.Form = snippetCreateForm{
 		Expires: 365,
@@ -81,14 +66,26 @@ func (app *application) pictureUploadForm(w http.ResponseWriter, r *http.Request
 
 type snippetCreateForm struct {
 	Title   string
-	Content string
 	Expires int
 	validator.Validator
 }
 
 func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseMultipartForm(1024 * 1024 * 16) // max 16 MB
+	cookie, _ := r.Cookie("auth_token")
+	claims, err := app.extractClaims(cookie)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	userIdStr := claims["user"].(string)
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	err = r.ParseMultipartForm(1024 * 1024 * 16) // max 16 MB
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
@@ -100,10 +97,8 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// TODO clarify fields
 	form := snippetCreateForm{
 		Title:   r.PostForm.Get("title"),
-		Content: r.PostForm.Get("content"),
 		Expires: expires,
 	}
 
@@ -133,8 +128,10 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	id, err := app.pictures.Insert(form.Title, form.Content, form.Expires)
-	app.objStorage.UploadObject("pictures", handler.Filename, file, handler.Size, mtype.String())
+	path := "/" + handler.Filename
+
+	id, err := app.pictures.Insert(userId, form.Title, path, form.Expires)
+	app.objStorage.UploadObject("pictures", path, file, handler.Size, mtype.String())
 
 	if err != nil {
 		app.serverError(w, err)

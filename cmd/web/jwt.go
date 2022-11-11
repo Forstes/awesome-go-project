@@ -39,3 +39,15 @@ func (app *application) extractToken(cookie *http.Cookie) (*jwt.Token, error) {
 	}
 	return token, nil
 }
+
+func (app *application) extractClaims(cookie *http.Cookie) (jwt.MapClaims, error) {
+	token, err := app.extractToken(cookie)
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		return claims, nil
+	}
+	return nil, err
+}

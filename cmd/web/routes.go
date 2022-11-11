@@ -23,8 +23,8 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/singup", app.signupPost)
 	router.HandlerFunc(http.MethodPost, "/logout", app.logoutPost)
 	router.HandlerFunc(http.MethodGet, "/picture/view/:id", app.pictureView)
-	router.Handler(http.MethodGet, "/picture/create", app.verifyJWT(http.HandlerFunc(app.pictureUploadForm)))
-	//router.HandlerFunc(http.MethodPost, "/picture/create", app.pictureUploadPost)
+	//router.Handler(http.MethodGet, "/picture/create", app.verifyJWT(http.HandlerFunc(app.pictureUploadForm)))
+	router.HandlerFunc(http.MethodPost, "/picture/create", app.pictureUploadPost)
 	router.HandlerFunc(http.MethodGet, "/pictures/:path", app.pictureStorage)
 
 	return app.recoverPanic(app.logRequest(secureHeaders(router)))

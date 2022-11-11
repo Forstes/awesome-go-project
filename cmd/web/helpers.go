@@ -47,3 +47,12 @@ func (app *application) newTemplateData(r *http.Request) *templateData {
 		//Flash:       app.sessionManager.PopString(r.Context(), "flash"),
 	}
 }
+
+/*
+func (app *application) generatePath(title string, mimeType string) string {
+	switch mimeType {
+	case "image/png":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("Linux.")
+} */
