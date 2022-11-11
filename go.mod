@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/gabriel-vasile/mimetype v1.4.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/joho/godotenv v1.4.0
 )

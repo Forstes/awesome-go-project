@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"text/template"
+	"time"
 
 	"awesome.forstes.go/internal/models"
 	"awesome.forstes.go/internal/storage"
@@ -22,6 +23,7 @@ type application struct {
 	pictures      *models.PictureModel
 	objStorage    storage.ObjectStorage
 	templateCache map[string]*template.Template
+	jwtOptions    *jwtOptions
 }
 
 func main() {
@@ -64,6 +66,7 @@ func main() {
 		pictures:      &models.PictureModel{DB: pool},
 		objStorage:    &storage.MinioStore{Client: minioClient},
 		templateCache: templateCache,
+		jwtOptions:    &jwtOptions{key: os.Getenv("JWT_KEY"), expires: 8 * time.Hour},
 	}
 
 	srv := &http.Server{

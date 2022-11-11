@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+
+	"github.com/golang-jwt/jwt"
 )
 
 func secureHeaders(next http.Handler) http.Handler {
@@ -21,6 +24,33 @@ func secureHeaders(next http.Handler) http.Handler {
 func (app *application) logRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		app.infoLog.Printf("%s - %s %s %s", r.RemoteAddr, r.Proto, r.Method, r.URL.RequestURI())
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (app *application) verifyJWT(next http.Handler) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		cookie, err := r.Cookie("auth_token")
+		if err != nil {
+			app.clientError(w, http.StatusUnauthorized)
+		}
+
+		token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+			_, ok := token.Method.(*jwt.SigningMethodECDSA)
+			if !ok {
+				app.clientError(w, http.StatusUnauthorized)
+			}
+			return "", nil
+		})
+		if err != nil {
+			err := errors.New("couldn't parse your token")
+			app.serverError(w, err)
+		}
+
+		if !token.Valid {
+			app.clientError(w, http.StatusUnauthorized)
+		}
 		next.ServeHTTP(w, r)
 	})
 }
