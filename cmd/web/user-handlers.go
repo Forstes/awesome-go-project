@@ -125,4 +125,14 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) logoutPost(w http.ResponseWriter, r *http.Request) {
 
+	cookie := &http.Cookie{
+		Name:     "auth_token",
+		Value:    "",
+		MaxAge:   0,
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, cookie)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
