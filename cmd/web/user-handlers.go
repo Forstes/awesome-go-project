@@ -11,8 +11,9 @@ import (
 )
 
 type loginForm struct {
-	Username string
-	Password string
+	Name                string
+	Password            string
+	validator.Validator `form:"-"`
 }
 
 type signupForm struct {
@@ -29,8 +30,40 @@ func (app *application) loginForm(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) loginPost(w http.ResponseWriter, r *http.Request) {
 	// TODO Pass and login check here
+	form := loginForm{
+		Name:     r.PostForm.Get("name"),
+		Password: r.PostForm.Get("password"),
+	}
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
 
-	token, err := app.generateJWT("1")
+	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "login.tmpl.html", data)
+		return
+	}
+
+	id, err := app.user.Authenticate(form.Name, form.Password)
+	if err != nil {
+		if errors.Is(err, models.ErrInvalidCredentials) {
+			form.AddNonFieldError("Name or password is incorrect")
+			data := app.newTemplateData(r)
+			data.Form = form
+			app.render(w, http.StatusUnprocessableEntity, "login.tmpl.html", data)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	token, err := app.generateJWT(fmt.Sprint(id))
 	if err != nil {
 		app.serverError(w, err)
 		return
@@ -43,7 +76,7 @@ func (app *application) loginPost(w http.ResponseWriter, r *http.Request) {
 func (app *application) signupForm(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 	data.Form = signupForm{}
-	app.render(w, http.StatusOK, "signup.tmpl", data)
+	app.render(w, http.StatusOK, "signup.tmpl.html", data)
 }
 
 func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +97,7 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
-		app.render(w, http.StatusUnprocessableEntity, "signup.tmpl", data)
+		app.render(w, http.StatusUnprocessableEntity, "signup.tmpl.html", data)
 		return
 	}
 
@@ -74,7 +107,7 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 			form.AddFieldError("name", "this name is already in use")
 			data := app.newTemplateData(r)
 			data.Form = form
-			app.render(w, http.StatusUnprocessableEntity, "signup.tmpl", data)
+			app.render(w, http.StatusUnprocessableEntity, "signup.tmpl.html", data)
 		} else {
 			app.serverError(w, err)
 		}

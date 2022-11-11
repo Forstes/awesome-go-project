@@ -2,7 +2,9 @@ package models
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -23,8 +25,7 @@ func (m *UserModel) Insert(name string, password string) (int, error) {
 		return 0, err
 	}
 
-	stmt := `INSERT INTO users (name, password)
-VALUES($1, $2) RETURNING ID`
+	stmt := `INSERT INTO users (name, password) VALUES($1, $2) RETURNING ID`
 
 	var id int
 	err1 := m.DB.QueryRow(context.Background(), stmt, name, string(hashedPassword)).Scan(&id)
@@ -36,9 +37,30 @@ VALUES($1, $2) RETURNING ID`
 	return int(id), nil
 }
 
-func (m *UserModel) Authenticate(email, password string) (int, error) {
-	return 0, nil
+func (m *UserModel) Authenticate(name, password string) (int, error) {
+	var id int
+	var hashedPassword []byte
 
+	stmt := `SELECT id, password FROM users WHERE name = $1`
+	s := User{}
+
+	err := m.DB.QueryRow(context.Background(), stmt, name).Scan(&s.ID, &s.HashedPassword)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return 0, ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+	return id, nil
 }
 
 func (m *UserModel) Exists(id int) (bool, error) {
