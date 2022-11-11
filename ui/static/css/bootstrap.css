@@ -15991,3 +15991,20 @@ footer {
   color: #6A6C6F;
   text-align: center;
 }
+
+
+form label {
+  display: inline-block;
+  margin-bottom: 9px;
+}
+
+.error {
+  color: #C0392B;
+  font-weight: bold;
+  display: block;
+}
+
+.error + textarea, .error + input {
+  border-color: #C0392B !important;
+  border-width: 2px !important;
+}

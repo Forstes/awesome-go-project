@@ -1,28 +1,33 @@
-{{define "title"}} Home {{end}}
+{{define "title"}} Sign up {{end}}
 
 {{define "main"}}
-  <body class="text-center">
+<body class="text-center">
     <div class="form-signin bg-light">
-      <form class="loginSignin" style="width: 50%; margin: 50% auto;">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
+      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/singup" method="POST" novalidate>
+        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+            {{with .Form.FieldErrors.name}}
+                <label class='error'>{{.}}</label>
+            {{end}}
         <div class="form-floating mb-3">
-          <input
+            <input
             type="text"
             class="form-control"
-            id="floatingInput"
             placeholder="Login"
             required
             minlength="4"
             maxlength="22"
+            name = 'name'
+            value='{{.Form.Name}}'
           />
           <label for="floatingInput">Login </label>
         </div>
-        <div class="form-floating mb-3">
-          <input
-            type="email"
+                {{with .Form.FieldErrors.password}}
+                    <label class='error'>{{.}}</label>
+                {{end}}
+            <div class="form-floating mb-3">
+            <input
+            type="password"
             class="form-control"
-            id="floatingInput"
             placeholder="Login"
             required
             minlength="4"

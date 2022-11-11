@@ -78,6 +78,8 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 		Name:     r.PostForm.Get("name"),
 		Password: r.PostForm.Get("password"),
 	}
+	println(form.Name)
+
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)

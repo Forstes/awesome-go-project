@@ -1,25 +1,32 @@
-{{define "title"}}Home{{end}}
+{{define "title"}}login{{end}}
 {{define "main"}}
 
   <body class="text-center">
     <div class="form-signin  bg-light">
-      <form class="loginSignin" style="width: 50%; margin: 50% auto;">
+      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/signin" method="POST" novalidate>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        {{with .Form.FieldErrors.name}}
+            <label class='error'>{{.}}</label>
+        {{end}}
         <div class="form-floating">
           <input
-            type="email"
+            type="text"
             class="form-control"
-            id="floatingInput"
             placeholder="Login"
+            name = 'name'
+            value='{{.Form.Name}}'
           />
           <label for="floatingInput">Login </label>
         </div>
+        {{with .Form.FieldErrors.password}}
+        <label class='error'>{{.}}</label>
+    {{end}}
         <div class="form-floating">
           <input
             type="password"
             class="form-control"
-            id="floatingPassword"
             placeholder="Password"
+            name = 'password'
           />
           <label for="floatingPassword">Password</label>
         </div>

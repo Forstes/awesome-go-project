@@ -2,7 +2,35 @@
 
 {{define "main"}}
 <form nctype="multipart/form-data" action="/picture/create" method="POST">
-  <div>
+  <div class="overlay">
+    <div class="overlay__inner">
+      <label class="overlay-title" >Title:</label>
+      {{with .Form.FieldErrors.title}}
+      <label class="error">{{.}}</label>
+      {{end}}
+      <h1 class="overlay__title">Upload picture</h1>
+  <div></div>
+   <p> <div></div>
+       <div>
+           <form method="POST" enctype="multipart/form-data" class="formView">
+          <div class="photo">
+            <label class="avatar-field">
+              <input
+                type="file"
+                name="avatar"
+                id="avatar"
+                accept="image/jpeg,image/png"
+              />
+             
+            </label>
+       </div>
+          </div>
+        </form>
+       
+     <div class="forPhoto"> <img  class="photo"  id="preview"></div>
+      </div>
+    </div>
+    <!--  -->
     <label>Title:</label>
     {{with .Form.FieldErrors.title}}
     <label class="error">{{.}}</label>
