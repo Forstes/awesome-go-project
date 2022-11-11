@@ -28,12 +28,11 @@ func (m *UserModel) Insert(name string, password string) (int, error) {
 	stmt := `INSERT INTO users (name, password) VALUES($1, $2) RETURNING ID`
 
 	var id int
-	err1 := m.DB.QueryRow(context.Background(), stmt, name, string(hashedPassword)).Scan(&id)
+	err = m.DB.QueryRow(context.Background(), stmt, name, string(hashedPassword)).Scan(&id)
 
-	if err1 != nil {
-		return 0, err1
+	if err != nil {
+		return 0, err
 	}
-
 	return int(id), nil
 }
 
