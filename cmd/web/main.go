@@ -24,6 +24,7 @@ type application struct {
 	objStorage    storage.ObjectStorage
 	templateCache map[string]*template.Template
 	jwtOptions    *jwtOptions
+	user          *models.UserModel
 }
 
 func main() {
@@ -67,6 +68,7 @@ func main() {
 		objStorage:    &storage.MinioStore{Client: minioClient},
 		templateCache: templateCache,
 		jwtOptions:    &jwtOptions{key: os.Getenv("JWT_KEY"), expires: 8 * time.Hour},
+		user:          &models.UserModel{DB: pool},
 	}
 
 	srv := &http.Server{
