@@ -15972,3 +15972,17 @@ fieldset:disabled .btn-group-vertical {
     margin-top: 45px;
   }
 }
+
+footer {
+  padding: 2px calc((100% - 800px) / 2) 0;
+}
+footer {
+  margin-top: 24em;
+  border-top: 1px solid #E4E5E7;
+  padding-top: 17px;
+  padding-bottom: 15px;
+  background: #FFFFFF;
+  height: 60px;
+  color: #6A6C6F;
+  text-align: center;
+}
