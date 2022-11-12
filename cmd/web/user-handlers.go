@@ -127,12 +127,12 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (app *application) logoutPost(w http.ResponseWriter, r *http.Request) {
+func (app *application) logout(w http.ResponseWriter, r *http.Request) {
 
 	cookie := &http.Cookie{
 		Name:   "auth_token",
 		Value:  "",
-		MaxAge: 0,
+		MaxAge: -1,
 	}
 
 	http.SetCookie(w, cookie)
