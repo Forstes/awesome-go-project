@@ -24,14 +24,15 @@ func (app *application) loginForm(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) loginPost(w http.ResponseWriter, r *http.Request) {
 	// TODO Pass and login check here
-	form := authForm{
-		Name:     r.PostForm.Get("name"),
-		Password: r.PostForm.Get("password"),
-	}
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
+	}
+
+	form := authForm{
+		Name:     r.PostForm.Get("name"),
+		Password: r.PostForm.Get("password"),
 	}
 
 	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
@@ -74,17 +75,18 @@ func (app *application) signupForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
-	form := authForm{
-		Name:     r.PostForm.Get("name"),
-		Password: r.PostForm.Get("password"),
-	}
-	println(form.Name)
 
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
+
+	form := authForm{
+		Name:     r.PostForm.Get("name"),
+		Password: r.PostForm.Get("password"),
+	}
+	println(form.Name)
 
 	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
 	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")

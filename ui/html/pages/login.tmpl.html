@@ -3,7 +3,7 @@
 
   <body class="text-center">
     <div class="form-signin  bg-light">
-      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/signin" method="POST" novalidate>
+      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/login" method="POST" novalidate>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         {{with .Form.FieldErrors.name}}
             <label class='error'>{{.}}</label>

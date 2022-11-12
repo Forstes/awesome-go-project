@@ -3,7 +3,7 @@
 {{define "main"}}
 <body class="text-center">
     <div class="form-signin bg-light">
-      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/singup" method="POST" novalidate>
+      <form class="loginSignin" style="width: 50%; margin: 10% auto;"  action="/signup" method="POST" novalidate>
         <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
             {{with .Form.FieldErrors.name}}
                 <label class='error'>{{.}}</label>
@@ -27,6 +27,7 @@
             <div class="form-floating mb-3">
             <input
             type="password"
+            name = 'password'
             class="form-control"
             placeholder="Login"
             required

@@ -37,8 +37,6 @@ func (m *UserModel) Insert(name string, password string) (int, error) {
 }
 
 func (m *UserModel) Authenticate(name, password string) (int, error) {
-	var id int
-	var hashedPassword []byte
 
 	stmt := `SELECT id, password FROM users WHERE name = $1`
 	s := User{}
@@ -51,7 +49,7 @@ func (m *UserModel) Authenticate(name, password string) (int, error) {
 			return 0, err
 		}
 	}
-	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	err = bcrypt.CompareHashAndPassword(s.HashedPassword, []byte(password))
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 			return 0, ErrInvalidCredentials
@@ -59,7 +57,7 @@ func (m *UserModel) Authenticate(name, password string) (int, error) {
 			return 0, err
 		}
 	}
-	return id, nil
+	return s.ID, nil
 }
 
 func (m *UserModel) Exists(id int) (bool, error) {
