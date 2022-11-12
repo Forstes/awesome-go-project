@@ -90,16 +90,16 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-
-	expires, err := strconv.Atoi(r.PostForm.Get("expires"))
+	println(userId)
+	/*expires, err := strconv.Atoi(r.PostForm.Get("expires"))
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
-	}
+	} */
 
 	form := snippetCreateForm{
 		Title:   r.PostForm.Get("title"),
-		Expires: expires,
+		Expires: 365,
 	}
 
 	file, handler, err := r.FormFile("file")
@@ -108,13 +108,13 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		return
 	}
 	defer file.Close()
-
+	println(userId)
 	mtype, err := mimetype.DetectReader(file)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-
+	println(userId)
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
 	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
 	form.CheckField(validator.PermittedInt(form.Expires, 1, 7, 365), "expires", "This field must equal 1, 7 or 365")
@@ -131,8 +131,11 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 	path := "/" + handler.Filename
 
 	id, err := app.pictures.Insert(userId, form.Title, path, form.Expires)
-	app.objStorage.UploadObject("pictures", path, file, handler.Size, mtype.String())
-
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	err = app.objStorage.UploadObject("pictures", path, file, handler.Size, mtype.String())
 	if err != nil {
 		app.serverError(w, err)
 		return
