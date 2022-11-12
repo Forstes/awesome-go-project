@@ -1,8 +1,9 @@
 {{define "title"}}Create a New Image{{end}} 
 
 {{define "main"}}
-<!-- 
-<form nctype="multipart/form-data" action="/picture/create" method="POST">
+
+<form enctype="multipart/form-data" action="/picture/create" method="POST">
+  <!-- 
   <div class="overlay">
     <div class="overlay__inner">
       <label class="overlay-title" >Title:</label>
@@ -34,10 +35,11 @@
 
     <!--  -->
     <label>Title:</label>
+    <input type="text" name="title" />
     {{with .Form.FieldErrors.title}}
     <label class="error">{{.}}</label>
     {{end}}
-    <input type="file" name="uploadfile" />
+    <input type="file" name="file" />
     <input type="hidden" name="token" value="{{.}}"/>  
   </div>
 

@@ -28,7 +28,7 @@ func (m *PictureModel) Insert(userId int, title string, path string, expires int
 	VALUES($1, $2, $3, NOW(), NOW() + INTERVAL '1 DAY' * $4) RETURNING ID`
 
 	var id int
-	err := m.DB.QueryRow(context.Background(), stmt, title, path, expires).Scan(&id)
+	err := m.DB.QueryRow(context.Background(), stmt, userId, title, path, expires).Scan(&id)
 
 	if err != nil {
 		return 0, err
