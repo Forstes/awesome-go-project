@@ -21,7 +21,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/login", app.loginPost)
 	router.HandlerFunc(http.MethodGet, "/signup", app.signupForm)
 	router.HandlerFunc(http.MethodPost, "/signup", app.signupPost)
-	router.HandlerFunc(http.MethodPost, "/logout", app.logoutPost)
+	router.HandlerFunc(http.MethodGet, "/logout", app.logout)
 	router.HandlerFunc(http.MethodGet, "/picture/view/:id", app.pictureView)
 	router.Handler(http.MethodGet, "/picture/create", app.verifyJWT(http.HandlerFunc(app.pictureUploadForm)))
 	router.HandlerFunc(http.MethodPost, "/picture/create", app.pictureUploadPost)
