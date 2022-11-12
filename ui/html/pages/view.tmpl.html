@@ -1,17 +1,24 @@
-{{define "title"}}Snippet #{{.Snippet.ID}}{{end}} 
+{{define "title"}}Snippet #{{.Picture.ID}}{{end}} 
 
 {{define "main"}} 
-  {{with .Snippet}}
-  <div class="snippet">
-    <div class="metadata">
-      <strong>{{.Title}}</strong>
-      <span>#{{.ID}}</span>
-    </div>
-    <pre><code>{{.Content}}</code></pre>
-    <div class="metadata">
-      <time>Created: {{humanDate .Created}}</time>
-      <time>Expires:  {{humanDate .Expires}}</time>
-    </div>
-  </div>
+  {{with .Picture}}
+  
+  <body>
+    <div class="mainBlock">
+    
+        <div class="wrapper">
+          <div class="container">
+            <div class="imgBlock">
+              <img src="{{.Path}}" alt="" />
+            </div>
+            <div class="content">
+              <h1>Title: {{.Title}}</h1> 
+              <h3>Owner: {{.Owner}}</h3>
+              <h3>Date of create: {{.Created}}</h3>
+            </div>
+        </div>
+        </div>
+      </div>
+  </body>
   {{end}} 
 {{end}}
