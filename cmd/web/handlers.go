@@ -49,7 +49,18 @@ func (app *application) pictureView(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	user, err := app.user.GetUserByPicture(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			fmt.Println("11111")
+			app.serverError(w, err)
 
+		}
+		return
+	}
+	picture.Owner = user.Name
 	data := app.newTemplateData(r)
 	data.Picture = picture
 

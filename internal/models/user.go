@@ -63,3 +63,23 @@ func (m *UserModel) Authenticate(name, password string) (int, error) {
 func (m *UserModel) Exists(id int) (bool, error) {
 	return false, nil
 }
+
+func (m *UserModel) GetUserByPicture(id int) (*User, error) {
+
+	stmt := `SELECT id, name, password FROM users
+	WHERE id = ANY (select owner_id FROM pictures 
+		WHERE id = $1)`
+
+	s := &User{}
+
+	err := m.DB.QueryRow(context.Background(), stmt, id).Scan(&s.ID, &s.Name, &s.HashedPassword)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return s, nil
+}
