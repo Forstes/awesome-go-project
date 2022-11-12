@@ -138,7 +138,7 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	path := "/" + strconv.Itoa(userId) + "-" + handler.Filename
+	path := app.generatePath(handler.Filename, strconv.Itoa(userId))
 
 	id, err := app.pictures.Insert(userId, form.Title, path, form.Expires)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strconv"
 	"time"
 )
 
@@ -49,11 +50,6 @@ func (app *application) newTemplateData(r *http.Request) *templateData {
 	}
 }
 
-/*
-func (app *application) generatePath(title string, mimeType string) string {
-	switch mimeType {
-	case "image/png":
-		fmt.Println("OS X.")
-	case "linux":
-		fmt.Println("Linux.")
-} */
+func (app *application) generatePath(filename string, userId string) string {
+	return "/" + userId + "-" + strconv.FormatInt(time.Now().Unix(), 10) + "-" + filename
+}
