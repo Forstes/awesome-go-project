@@ -109,7 +109,6 @@ func (app *application) signupPost(w http.ResponseWriter, r *http.Request) {
 		} else {
 			app.serverError(w, err)
 		}
-
 	}
 
 	if err != nil {

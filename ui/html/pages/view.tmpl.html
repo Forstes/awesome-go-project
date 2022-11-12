@@ -1,20 +1,19 @@
-{{define "title"}}Snippet #{{.Picture.ID}}{{end}} 
+{{define "title"}}Picture | {{.Picture.Title}}{{end}} 
 
 {{define "main"}} 
   {{with .Picture}}
   
   <body>
     <div class="mainBlock">
-    
         <div class="wrapper">
           <div class="container">
             <div class="imgBlock">
-              <img src="{{.Path}}" alt="" />
+              <img src="/pictures{{.Path}}" alt="" />
             </div>
             <div class="content">
               <h1>Title: {{.Title}}</h1> 
               <h3>Owner: {{.Owner}}</h3>
-              <h3>Date of create: {{.Created}}</h3>
+              <h3>Publication date: {{.Created}}</h3>
             </div>
         </div>
         </div>
