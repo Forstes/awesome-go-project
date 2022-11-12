@@ -50,6 +50,7 @@ body {
   background-color: #fff;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overflow:hidden;
 }
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
@@ -15982,9 +15983,9 @@ footer {
   padding: 2px calc((100% - 800px) / 2) 0;
 }
 footer {
-  margin-top: 22em;
+  margin-top: 34em;
   border-top: 1px solid #E4E5E7;
-  /* padding-top: 17px; */
+  padding-top: 17px;
   padding-bottom: 15px;
   background: #FFFFFF;
   height: 60px;
@@ -16009,47 +16010,18 @@ form label {
   border-width: 2px !important;
 }
 
- /* css for  form page
-
-:root {
-  --dark-color: hsl(var(--hue), 100%, 9%);
-  --light-color: hsl(var(--hue), 95%, 98%);
-  --base: hsl(var(--hue), 95%, 50%);
-  --complimentary1: hsl(var(--hue-complimentary1), 95%, 50%);
-  --complimentary2: hsl(var(--hue-complimentary2), 95%, 50%);
-
-  --font-family: "Poppins", system-ui;
-
-  --bg-gradient: linear-gradient(
-    to bottom,
-    hsl(var(--hue), 95%, 99%),
-    hsl(var(--hue), 95%, 84%)
-  );
-}
 
 
 
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
+.viewBodyBlock {
   max-width: 1920px;
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 2rem;
-  font-family: var(--font-family);
-  color: var(--dark-color);
-  background: var(--bg-gradient);
+  /* font-family: var(--font-family); */
+  /* color: var(--dark-color); */
+  /* background: var(--bg-gradient); */
 }
 
 .orb-canvas {
@@ -16067,9 +16039,11 @@ strong {
 }
 
 .overlay {
+
+  margin: 10% auto;
   width: 100%;
   max-width: 1140px;
-  max-height: 640px;
+  max-height: 1140px;
   padding: 8rem 6rem;
 
   align-items: center;
@@ -16143,9 +16117,9 @@ a {
   color: var(--dark-color);
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
 
@@ -16191,21 +16165,24 @@ a {
 }
 
 .forPhoto {
-  margin-top: -16em;
-  margin-left: 6em;
+  margin-top: 4em;
 }
 
+
+input [type="submit"]{
+  margin-top: 2em;
+}
 .formView{
   margin-top: 2em;
 }
 .photo {
 
-  width: 26em;
-  height: 24em;
+  width: 24em;
+  height: 20em;
 }
 
 
-css for view page 
+/* //css for view page  */
 
 * {
   margin: 0;
@@ -16213,10 +16190,9 @@ css for view page
   box-sizing: border-box;
 }
 
-body {
+.viewBodyBlock {
   width: 100%;
   height: 100%;
-
 }
 
 .mainBlock {
@@ -16226,7 +16202,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.wrapper {
+.wrapperForView {
   display: flex;
   overflow-x: hidden;
   margin: auto;
@@ -16236,7 +16212,7 @@ body {
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
-.container {
+.containerForView {
   display: grid;
   grid-template-columns: 55% 45%;
   background-color: rgb(255, 255, 255);
@@ -16268,31 +16244,31 @@ body {
   border-radius: 20px 0px 0px 20px;
 }
 
-.content {
+.contentForView {
   display: flex;
   flex-direction: column;
   padding: 2rem;
 }
 
-.content h1 {
+.contentForView>h1 {
   font-size: 30px;
   font-weight: 800;
   text-transform: uppercase;
 }
 
-.content h3 {
+.contentForView>h3 {
   font-size: 20px;
   color: rgb(78, 78, 78);
   font-weight: 600;
   text-transform: capitalize;
 }
 
-.content p {
+.contentForView>p {
   color: rgb(78, 78, 78);
   font-size: 18px;
   line-height: 25px;
   padding: 7px;
   font-weight: 400;
-} */
+} 
 
 

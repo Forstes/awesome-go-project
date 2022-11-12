@@ -5,14 +5,17 @@
   <meta charset='utf-8'>
   <title>{{template "title" .}} - I Mage</title>
   <link rel='stylesheet' href='/static/css/bootstrap.css'>
+  <script scr="/static/js/main.js"></script>
 </head>
 <body>
 <header>
 {{template "nav" .}}
 </header>
 {{template "main" .}}
-<footer>
-  Powered by <a href='https://golang.org/'>Go</a> in {{.CurrentYear}}
+<footer >
+<span>Powered by  <a href='https://golang.org/'>Go</a> in {{.CurrentYear}}
+</span>  
+  
 </footer>
 </body>
 </html>
