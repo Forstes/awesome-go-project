@@ -27,7 +27,6 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 	if !ok {
 		err := fmt.Errorf("the template %s does not exist", page)
 		app.serverError(w, err)
-		fmt.Println("7777777777777")
 		return
 	}
 
@@ -35,7 +34,6 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 	err := ts.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		app.serverError(w, err)
-		fmt.Println("6666666666666")
 		return
 	}
 
@@ -44,9 +42,10 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 }
 
 func (app *application) newTemplateData(r *http.Request) *templateData {
+	cum, _ := r.Cookie("auth_token")
 	return &templateData{
 		CurrentYear: time.Now().Year(),
-		//Flash:       app.sessionManager.PopString(r.Context(), "flash"),
+		Flash:       cum,
 	}
 }
 

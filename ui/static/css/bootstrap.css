@@ -16009,7 +16009,7 @@ form label {
   border-width: 2px !important;
 }
 
-// css for  form page
+ /* css for  form page
 
 :root {
   --dark-color: hsl(var(--hue), 100%, 9%);
@@ -16108,7 +16108,7 @@ strong {
 .overlay__btn {
   width: 50%;
   height: 2.5rem;
-  /* display: flex; */
+
   justify-content: center;
   align-items: center;
   font-size: 0.875rem;
@@ -16148,7 +16148,7 @@ a {
   align-items: center;
 }
 
-/* Not too many browser support this yet but it's good to add! */
+
 @media (prefers-contrast: high) {
   .orb-canvas {
     display: none;
@@ -16199,12 +16199,13 @@ a {
   margin-top: 2em;
 }
 .photo {
-  /* margin-left: 16em; */
+
   width: 26em;
   height: 24em;
 }
 
-// css for view page
+
+css for view page 
 
 * {
   margin: 0;
@@ -16215,7 +16216,7 @@ a {
 body {
   width: 100%;
   height: 100%;
-  /* overflow-x: hidden; */
+
 }
 
 .mainBlock {
@@ -16292,6 +16293,6 @@ body {
   line-height: 25px;
   padding: 7px;
   font-weight: 400;
-}
+} */
 
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"path/filepath"
 	"text/template"
 	"time"
@@ -13,7 +14,7 @@ type templateData struct {
 	Picture     *models.Picture
 	Pictures    []*models.Picture
 	Form        any
-	Flash       string
+	Flash       *http.Cookie
 }
 
 var functions = template.FuncMap{
