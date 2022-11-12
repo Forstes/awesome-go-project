@@ -50,7 +50,7 @@ body {
   background-color: #fff;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  overflow:hidden;
+  /* overflow:hidden; */
 }
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
@@ -15983,7 +15983,7 @@ footer {
   padding: 2px calc((100% - 800px) / 2) 0;
 }
 footer {
-  margin-top: 34em;
+  margin-top: 70em;
   border-top: 1px solid #E4E5E7;
   padding-top: 17px;
   padding-bottom: 15px;
@@ -16044,7 +16044,7 @@ strong {
   width: 100%;
   max-width: 1140px;
   max-height: 1140px;
-  padding: 8rem 6rem;
+  padding: 10rem 6rem;
 
   align-items: center;
   background: rgba(255, 255, 255, 0.375);
@@ -16056,7 +16056,7 @@ strong {
 .overlay__inner {
   max-width: 36rem;
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  grid-template-columns: repeat(1, 2fr);
 }
 
 .overlay__title {
@@ -16272,3 +16272,48 @@ input [type="submit"]{
 } 
 
 
+.inputTitleCreate{
+  border-radius: 6%;
+  width: 56%;
+}
+
+
+
+
+.inputImage{}
+
+.inputSubmit{
+  margin-top: 20px;
+  margin-left: 220px;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px;
+    box-sizing: border-box;
+    color: #121212;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 1 1 auto;
+    font-family: Inter,sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1;
+ 
+    outline: none;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s,-webkit-box-shadow .2s;
+    white-space: nowrap;
+    border: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .inputSubmit:hover {
+    background-color: black;
+    color: white;
+    box-shadow: #121212 0 0 0 3px, transparent 0 0 0 0;
+  }

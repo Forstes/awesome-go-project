@@ -14,21 +14,31 @@
         <form enctype="multipart/form-data" action="/picture/create" method="POST" class="formView">
           <div class="overlay">
             <div class="overlay__inner">
-              <h1 class="overlay__title">Upload picture</h1>
-              <label class="overlay-title">Title:</label>
-              <input type="text" name="title" />
+              <h1 class="overlay__title">Title:</h1>
+              <input type="text" name="title"  class="inputTitleCreate"/>
+              <h1 class="overlay__title">Upload picture:</h1>
+           
+   
+              <label class="avatar-field">
+                <input type="file" name="file" id="avatar" class="inputImage" accept="image/jpeg,image/png" onchange="loadFile(event)" />
+              </label>
               <div class="photo">
-                <label class="avatar-field">
-                  <input type="file" name="file" id="avatar" accept="image/jpeg,image/png" onchange="loadFile(event)" />
-                </label>
-              </div>
+              
+                <div class="forPhoto"><img class="photo" id="preview" /></div>
+                <input type="submit" class="inputSubmit" value=" Publish image" />
+            </div>
+           
+           
             </div>
           </div>
-          <input type="submit" value="Publish image" />
+       
         </form>
-        <div class="forPhoto"><img class="photo" id="preview" /></div>
+      
       </div>
     </div>
   </div>
 </body>
 {{end}}
+
+
+

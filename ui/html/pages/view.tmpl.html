@@ -3,17 +3,17 @@
 {{define "main"}} 
   {{with .Picture}}
   
-  <body>
+  <body  class="viewBodyBlock">
     <div class="mainBlock">
-        <div class="wrapper">
-          <div class="container">
+      <div class="wrapperForView">
+        <div class="containerForView">
             <div class="imgBlock">
               <img src="/pictures{{.Path}}" alt="" />
             </div>
-            <div class="content">
+            <div class="contentForView">
               <h1>Title: {{.Title}}</h1> 
               <h3>Owner: {{.Owner}}</h3>
-              <h3>Publication date: {{.Created}}</h3>
+              <h3>Publication date: {{humanDate .Created}}</h3>
             </div>
         </div>
         </div>
