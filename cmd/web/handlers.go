@@ -54,7 +54,6 @@ func (app *application) pictureView(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
 		} else {
-			fmt.Println("11111")
 			app.serverError(w, err)
 
 		}
@@ -139,7 +138,7 @@ func (app *application) pictureUploadPost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	path := "/" + handler.Filename
+	path := app.generatePath(handler.Filename, strconv.Itoa(userId))
 
 	id, err := app.pictures.Insert(userId, form.Title, path, form.Expires)
 	if err != nil {
